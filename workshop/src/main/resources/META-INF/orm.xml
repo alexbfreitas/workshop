@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+	xmlns:xsi="http://w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
+	version="2.1">
+	
+	<named-native-query name="queries.listaOrdersItens" result-set-mapping="montlyOrdersMapping">
+		<query>
+			SELECT date_format(o.order_date, '%Y/%m') mes, sum(io.total) total
+			from orders o
+			inner join item_order io on io.id_order = o.id
+			group by date_format(o.order_date, '%Y%m')
+			order by o.order_date desc			
+		</query>
+	</named-native-query>
+	
+	<sql-result-set-mapping name="montlyOrdersMapping">
+		<constructor-result target-class="com.workshop.exemplo.model.dto.MontlyOrders">
+			<column name="mes" class="java.lang.String"/>
+			<column name="total" class="java.math.BigDecimal"/>				
+		</constructor-result>		
+	</sql-result-set-mapping>	
+</entity-mappings>
+	

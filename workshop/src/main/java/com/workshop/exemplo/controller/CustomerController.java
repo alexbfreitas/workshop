@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.workshop.exemplo.model.Customer;
+import com.workshop.exemplo.model.dto.MontlyOrders;
 import com.workshop.exemplo.repository.CustomerRepository;
 import com.workshop.exemplo.service.CustomerService;
 
@@ -63,8 +64,22 @@ public class CustomerController {
 	
 	@GetMapping("/list/{name}")
 	public ResponseEntity<?> read(@PathVariable("name") String name) {
-		List<Customer> listaCustomer = customerRepository.findByNameContainingIgnoreCase(name);
+		//List<Customer> listaCustomer = customerRepository.findByNameContainingIgnoreCase(name);
+		List<Customer> listaCustomer = customerRepository.listarClientesPorNome(name);
 		return listaCustomer.size() > 0 ? ResponseEntity.ok(listaCustomer) : ResponseEntity.notFound().build();
 	}
 	
+	@GetMapping("/email/{email:.+}")
+	public ResponseEntity<?> getByEmail(@PathVariable("email") String email) {
+		Customer customer = customerRepository.findByEmail(email);
+		return customer == null? ResponseEntity.notFound().build(): ResponseEntity.ok(customer);
+	}
+	
+	@GetMapping("/teste")
+	public ResponseEntity<?> teste() {
+		List<Customer> listaCustomer = customerRepository.listarClientes();
+		return listaCustomer.size() > 0 ? ResponseEntity.ok(listaCustomer) : ResponseEntity.notFound().build();
+	}
+	
+
 }

@@ -1,5 +1,7 @@
 package com.workshop.exemplo.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -17,11 +19,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.workshop.exemplo.model.Order;
+import com.workshop.exemplo.model.dto.MontlyOrders;
 import com.workshop.exemplo.repository.OrderRepository;
 import com.workshop.exemplo.service.OrderService;
 
 @RestController
-@RequestMapping("/Order")
+@RequestMapping("/order")
 public class OrderController {
 
 	@Autowired
@@ -59,4 +62,9 @@ public class OrderController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
 	}	
 	
+	@GetMapping("/vendas")
+	public ResponseEntity<?> listaVendas() {
+		List<MontlyOrders> vendas = OrderRepository.montlyOrders();
+		return vendas.size() > 0 ? ResponseEntity.ok(vendas) : ResponseEntity.notFound().build();
+	}
 }
