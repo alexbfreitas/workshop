@@ -1,6 +1,7 @@
 package com.workshop.exemplo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.workshop.exemplo.model.Customer;
-import com.workshop.exemplo.model.dto.MontlyOrders;
 import com.workshop.exemplo.repository.CustomerRepository;
 import com.workshop.exemplo.service.CustomerService;
 
@@ -45,8 +45,9 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Customer> read(@PathVariable Long id) {
-		return ResponseEntity.status(HttpStatus.OK).body(customerRepository.findOne(id));
+	public ResponseEntity<?> read(@PathVariable Long id) {
+		Optional<Customer> customer = customerRepository.findById(id);
+		return ResponseEntity.status(HttpStatus.OK).body(customer);
 	}
 	
 	@DeleteMapping("/{id}")

@@ -1,6 +1,7 @@
 package com.workshop.exemplo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -45,8 +46,9 @@ public class OrderController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Order> read(@PathVariable Long id) {
-		return ResponseEntity.status(HttpStatus.OK).body(OrderRepository.findOne(id));
+	public ResponseEntity<?> read(@PathVariable Long id) {
+		Optional<Order> order = OrderRepository.findById(id);
+		return ResponseEntity.status(HttpStatus.OK).body(order);
 	}
 	
 	@DeleteMapping("/{id}")

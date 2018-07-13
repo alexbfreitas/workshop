@@ -5,7 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.workshop.exemplo.model.Customer;
+import com.workshop.exemplo.controller.exceptionHandler.OrderNotFoundException;
 import com.workshop.exemplo.model.Order;
 import com.workshop.exemplo.repository.OrderRepository;
 
@@ -28,13 +28,13 @@ public class OrderService {
 	
 	@Transactional
 	public void delete(Long id) {
-		Order order = repository.findOne(id);
+		Order order = repository.findById(id).orElseThrow( () -> new OrderNotFoundException("Order not found: ->" + id));
 		
 		if(order == null ) {
 			throw new IllegalArgumentException();
 		}
 		
-		repository.delete(id);
+		repository.deleteById(id);
 		return;
 		
 	}	

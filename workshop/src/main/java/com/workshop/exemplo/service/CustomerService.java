@@ -1,6 +1,7 @@
 package com.workshop.exemplo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -29,13 +30,13 @@ public class CustomerService {
 	
 	@Transactional
 	public void delete(Long id) {
-		Customer customer = repository.findOne(id);
+		Optional<Customer> customer = repository.findById(id);
 		
 		if(customer == null ) {
 			throw new IllegalArgumentException();
 		}
 		
-		repository.delete(id);
+		repository.deleteById(id);
 		return;
 		
 	}	
